@@ -3,7 +3,9 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-use App\Http\Controllers\Api\V1\UserController;
+use App\Http\Controllers\Api\V1\APIUserController;
+use App\Http\Controllers\Api\V1\APICategoriesController;
+use App\Http\Controllers\Api\V1\APIArticlesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,10 +23,20 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::prefix('v1')->group(function(){
-    Route::post('register', [UserController::class, 'register'])->name('api.register');
-    Route::post('login', [UserController::class, 'login'])->name('api.login');
+    Route::post('register', [APIUserController::class, 'register'])->name('api.register');
+    Route::post('login', [APIUserController::class, 'login'])->name('api.login');
     Route::group(['middleware' => 'auth:api'], function(){
-        Route::get('profile', [UserController::class, 'profile'])->name('api.profile');
-        Route::get('logout', [UserController::class, 'logout'])->name('api.logout');
+        Route::prefix('categories')->group(function(){
+            Route::post('create', [APICategoriesController::class, 'create'])->name('api.categories.create');
+            Route::post('update', [APICategoriesController::class, 'update'])->name('api.categories.update');
+            Route::delete('delete', [APICategoriesController::class, 'delete'])->name('api.categories.delete');
+        });
+        Route::prefix('articles')->group(function(){
+            Route::post('create', [APIArticlesController::class, 'create'])->name('api.articles.create');
+            Route::post('update', [APIArticlesController::class, 'update'])->name('api.articles.update');
+            Route::delete('delete', [APIArticlesController::class, 'delete'])->name('api.articles.delete');
+        });
+        Route::get('profile', [APIUserController::class, 'profile'])->name('api.profile');
+        Route::get('logout', [APIUserController::class, 'logout'])->name('api.logout');
     });
 });

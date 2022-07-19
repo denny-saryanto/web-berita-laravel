@@ -18,10 +18,10 @@ class CreateArticlesTable extends Migration
             $table->string('title');
             $table->string('content');
             $table->string('image');
-            $table->unsignedBigInteger('user_id')->unique();
-            $table->unsignedBigInteger('category_id')->unique();
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('category_id');
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('category_id')->references('id')->on('categories');
             $table->timestamps();
         });
     }
