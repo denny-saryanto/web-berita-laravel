@@ -10,6 +10,12 @@ use App\Models\Categories;
 
 class APICategoriesController extends Controller
 {
+    public function show(){
+        return response()->json([
+            "data" => Categories::all(),
+        ]);
+    }
+
     public function create(Request $request){
         $validator = Validator::make($request->all(), [
             'name' => 'string|required',

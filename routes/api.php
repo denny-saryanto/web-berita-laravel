@@ -27,6 +27,7 @@ Route::prefix('v1')->group(function(){
     Route::post('login', [APIUserController::class, 'login'])->name('api.login');
     Route::group(['middleware' => 'auth:api'], function(){
         Route::prefix('categories')->group(function(){
+            Route::get('show', [APICategoriesController::class, 'show'])->name('api.categories.show');
             Route::post('create', [APICategoriesController::class, 'create'])->name('api.categories.create');
             Route::post('update', [APICategoriesController::class, 'update'])->name('api.categories.update');
             Route::delete('delete', [APICategoriesController::class, 'delete'])->name('api.categories.delete');
