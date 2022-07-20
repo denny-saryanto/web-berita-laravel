@@ -12,8 +12,9 @@ class APICategoriesController extends Controller
 {
     public function show(){
         return response()->json([
+            "message" => "Request Success",
             "data" => Categories::all(),
-        ]);
+        ], 200);
     }
 
     public function create(Request $request){

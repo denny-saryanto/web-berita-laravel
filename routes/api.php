@@ -29,12 +29,13 @@ Route::prefix('v1')->group(function(){
         Route::prefix('categories')->group(function(){
             Route::get('show', [APICategoriesController::class, 'show'])->name('api.categories.show');
             Route::post('create', [APICategoriesController::class, 'create'])->name('api.categories.create');
-            Route::post('update', [APICategoriesController::class, 'update'])->name('api.categories.update');
+            Route::put('update', [APICategoriesController::class, 'update'])->name('api.categories.update');
             Route::delete('delete', [APICategoriesController::class, 'delete'])->name('api.categories.delete');
         });
         Route::prefix('articles')->group(function(){
+            Route::get('show', [APIArticlesController::class, 'show'])->name('api.articles.show');
             Route::post('create', [APIArticlesController::class, 'create'])->name('api.articles.create');
-            Route::post('update', [APIArticlesController::class, 'update'])->name('api.articles.update');
+            Route::put('update', [APIArticlesController::class, 'update'])->name('api.articles.update');
             Route::delete('delete', [APIArticlesController::class, 'delete'])->name('api.articles.delete');
         });
         Route::get('profile', [APIUserController::class, 'profile'])->name('api.profile');
