@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Categories;
 
 class APICategoriesController extends Controller
@@ -20,7 +21,6 @@ class APICategoriesController extends Controller
     public function create(Request $request){
         $validator = Validator::make($request->all(), [
             'name' => 'string|required',
-            'user_id' => 'integer|required',
         ]);
 
         if($validator->fails()){
@@ -31,7 +31,7 @@ class APICategoriesController extends Controller
 
         $data = [
             'name' => $request->name,
-            'user_id' => $request->user_id,
+            'user_id' => Auth::user()->id,
         ];
 
         $query = Categories::create($data);
@@ -51,7 +51,6 @@ class APICategoriesController extends Controller
         $validator = Validator::make($request->all(), [
             'old_name' => 'string|required',
             'name' => 'string|required',
-            'user_id' => 'integer|required',
         ]);
 
         if($validator->fails()){
@@ -62,7 +61,7 @@ class APICategoriesController extends Controller
 
         $data = [
             'name' => $request->name,
-            'user_id' => $request->user_id,
+            'user_id' => Auth::user()->id,
         ];
 
         $query = Categories::where('name', $request->old_name)->update($data);

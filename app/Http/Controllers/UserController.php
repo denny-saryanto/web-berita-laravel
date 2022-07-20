@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Cookie;
 use App\Models\User;
+use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
@@ -20,10 +21,14 @@ class UserController extends Controller
     }
 
     public function loginMethod(Request $request){
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'email' => 'required|email',
             'password' => 'required|min:8',
         ]);
+
+        if($validator->fails()){
+            return back()->withErrors($validator->errors())->withInput();
+        }
 
         if(Auth::attempt(['email' => $request->email, 'password' => $request->password])){
             $request->session()->regenerate();

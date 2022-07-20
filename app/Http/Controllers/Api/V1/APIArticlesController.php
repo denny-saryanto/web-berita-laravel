@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Articles;
 
 class APIArticlesController extends Controller
@@ -23,7 +24,6 @@ class APIArticlesController extends Controller
             'content' => 'string|required',
             'image' => 'string|required',
             'category_id' => 'integer|required',
-            'user_id' => 'integer|required',
         ]);
 
         if($validator->fails()){
@@ -36,7 +36,7 @@ class APIArticlesController extends Controller
             'title' => $request->title,
             'content' => $request->content,
             'image' => $request->image,
-            'user_id' => $request->user_id,
+            'user_id' => Auth::user()->id,
             'category_id' => $request->category_id,
         ];
 
@@ -60,7 +60,6 @@ class APIArticlesController extends Controller
             'data.*.content' => 'string',
             'data.*.image' => 'string',
             'data.*.category_id' => 'integer',
-            'data.*.user_id' => 'integer|required',
         ]);
 
         if($validator->fails()){
@@ -81,6 +80,9 @@ class APIArticlesController extends Controller
                 ]
             }
         */
+
+        $data = $request->data[0];
+        $data['user_id'] = Auth::user()->id;
 
         $query = Articles::where('id', $request->id)->update($request->data[0]);
 
