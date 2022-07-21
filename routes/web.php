@@ -29,4 +29,14 @@ Route::post('register', [UserController::class, 'registerMethod']);
 Route::group(['middleware' => 'auth'], function(){
     Route::get('logout', [UserController::class, 'logout'])->name('logout');
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    Route::prefix('articles')->group(function(){
+        Route::get('show', [DashboardController::class, 'showArticle'])->name('articles.show');
+        Route::get('create', [DashboardController::class, 'createArticle'])->name('articles.create');
+    });
+
+    Route::prefix('categories')->group(function(){
+        Route::get('show', [DashboardController::class, 'showCategory'])->name('categories.show');
+        Route::get('create', [DashboardController::class, 'createCategory'])->name('categories.create');
+    });
 });

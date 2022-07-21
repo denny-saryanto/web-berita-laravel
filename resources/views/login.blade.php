@@ -1,8 +1,6 @@
 @extends('layout.main')
 
-@section('title')
-    Login
-@endsection
+@section('title', 'Login')
 
 @section('main')
 @if (Auth::check())
