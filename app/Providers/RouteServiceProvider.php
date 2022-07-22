@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
 
+use Illuminate\Pagination\Paginator;
+
 class RouteServiceProvider extends ServiceProvider
 {
     /**
@@ -36,6 +38,8 @@ class RouteServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->configureRateLimiting();
+
+        Paginator::useBootstrap();
 
         $this->routes(function () {
             Route::prefix('api')

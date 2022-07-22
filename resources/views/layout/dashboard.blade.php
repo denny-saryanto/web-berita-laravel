@@ -6,6 +6,7 @@
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <!-- Styles -->
         <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+        @yield('css')
         <title>Dashboard | @yield('title')</title>
     </head>
     <body class="hold-transition sidebar-mini">
@@ -16,7 +17,7 @@
                         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
                     </li>
                     <li class="nav-item d-none d-sm-inline-block px-1">
-                        <a href="index3.html" class="nav-link">Home</a>
+                        <a href="{{ route('homepage') }}" class="nav-link">Home</a>
                     </li>
                     <li class="nav-item d-none d-sm-inline-block px-1">
                         <a href="#" class="nav-link">Contact</a>

@@ -18,7 +18,7 @@ use App\Http\Controllers\DashboardController;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('homepage');
 
 Route::get('login', [UserController::class, 'loginView'])->name('login');
 Route::get('register', [UserController::class, 'registerView'])->name('register');
@@ -33,6 +33,7 @@ Route::group(['middleware' => 'auth'], function(){
     Route::prefix('articles')->group(function(){
         Route::get('show', [DashboardController::class, 'showArticle'])->name('articles.show');
         Route::get('create', [DashboardController::class, 'createArticle'])->name('articles.create');
+        Route::get('update/{id}', [DashboardController::class, 'updateArticle'])->name('articles.update');
     });
 
     Route::prefix('categories')->group(function(){
