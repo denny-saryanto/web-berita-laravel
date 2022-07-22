@@ -4,7 +4,7 @@
 
 @section('css')
     <!-- TinyMCE -->
-    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+    <script src="https://cdn.tiny.cloud/1/cqgh3hqnsj8hp4ebyxgxqzd4t2s9r4zlx59egrxq33l0btqp/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
 @endsection
 
 @section('main')
@@ -39,14 +39,6 @@
                                     <div class="input-group mb-3">
                                         <textarea id="tiny" class="form-control" name="content"></textarea>
                                     </div>
-                                    {{-- <div class="input-group mb-3">
-                                        <textarea type="text" name="content" class="form-control" placeholder="Content" style="resize:none" rows="3"></textarea>
-                                        <div class="input-group-append">
-                                            <div class="input-group-text">
-                                                <span class="fas fa-lock"></span>
-                                            </div>
-                                        </div>
-                                    </div> --}}
                                     <div class="input-group mb-3">
                                         <input id="imageForm" type="text" name="image" class="form-control" placeholder="Image Link">
                                         <div class="input-group-append">

@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 use App\Models\Articles;
+use App\Models\Categories;
 
 class DashboardController extends Controller
 {
@@ -16,11 +18,19 @@ class DashboardController extends Controller
         $data = Articles::join('categories', 'articles.category_id', '=', 'categories.id')
         ->join('users', 'articles.user_id', '=', 'users.id')
         ->select('articles.*', 'users.name as username', 'categories.name as categoryname')
+        ->where('users.id', Auth::user()->id)
         ->orderBy('articles.created_at', 'DESC')
         ->paginate('5');
-        return view('dashboard.articles.showArticle', [
-            'articles' => $data,
-        ]);
+
+        if($data->isEmpty()){
+            return view('dashboard.articles.showArticle', [
+                'articles' => "not found",
+            ]);
+        } else {
+            return view('dashboard.articles.showArticle', [
+                'articles' => $data,
+            ]);
+        }
     }
 
     public function createArticle(Request $request){
@@ -34,7 +44,19 @@ class DashboardController extends Controller
     // Categories
 
     public function showCategory(){
-        return view('dashboard.categories.showCategories');
+        $data = Categories::join('users', 'categories.user_id', '=', 'users.id')
+        ->select('categories.*', 'users.name as username')
+        ->paginate('5');
+
+        if($data->isEmpty()){
+            return view('dashboard.categories.showCategories', [
+                'categories' => "not found",
+            ]);
+        } else {
+            return view('dashboard.categories.showCategories', [
+                'categories' => $data,
+            ]);
+        }
     }
 
     public function createCategory(){
