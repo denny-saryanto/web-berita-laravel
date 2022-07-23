@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\MainPageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,6 +27,8 @@ Route::get('register', [UserController::class, 'registerView'])->name('register'
 Route::post('login', [UserController::class, 'loginMethod']);
 Route::post('register', [UserController::class, 'registerMethod']);
 
+Route::get('articles', [MainPageController::class, 'articles'])->name('articles');
+
 Route::group(['middleware' => 'auth'], function(){
     Route::get('logout', [UserController::class, 'logout'])->name('logout');
     Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -33,7 +36,6 @@ Route::group(['middleware' => 'auth'], function(){
     Route::prefix('articles')->group(function(){
         Route::get('show', [DashboardController::class, 'showArticle'])->name('articles.show');
         Route::get('create', [DashboardController::class, 'createArticle'])->name('articles.create');
-        Route::get('update/{id}', [DashboardController::class, 'updateArticle'])->name('articles.update');
     });
 
     Route::prefix('categories')->group(function(){

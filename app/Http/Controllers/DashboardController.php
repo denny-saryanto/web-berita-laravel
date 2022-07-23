@@ -37,10 +37,6 @@ class DashboardController extends Controller
         return view('dashboard.articles.createArticle');
     }
 
-    public function updateArticle(Request $request, $id){
-        return view('dashboard.articles.createArticle');
-    }
-
     // Categories
 
     public function showCategory(){
