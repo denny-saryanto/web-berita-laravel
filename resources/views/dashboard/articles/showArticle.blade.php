@@ -59,7 +59,7 @@
                                             {{-- <td class="align-middle">{{ $data->username }}</td> --}}
                                             <td class="align-middle">{{ $data->categoryname }}</td>
                                             <td class="align-middle">
-                                                <button id="btnUpdate" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#updateModal" onclick="setData('{{ $data->id }}', '{{ $data->title }}', '{{ $data->content }}', '{{ $data->image }}')">Update</button>
+                                                <button id="btnUpdate" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#updateModal" onclick="setData('{{ $data->id }}', '{{ $data->title }}', `{{ $data->content }}`, '{{ $data->image }}')">Update</button>
                                             </td>
                                             <td class="align-middle"><button class="btn btn-sm btn-danger" onclick="deleteData({{ $data->id }})">Delete</button></td>
                                         </tr>
