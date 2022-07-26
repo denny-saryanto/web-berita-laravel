@@ -64,7 +64,6 @@ class APIArticlesController extends Controller
             'id' => 'integer|required',
             'title' => 'string',
             'content' => 'string',
-            'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:4096',
             'category_id' => 'integer',
         ]);
 
@@ -76,14 +75,6 @@ class APIArticlesController extends Controller
 
         $data = $request;
         $data['user_id'] = Auth::user()->id;
-
-        // Image Request Handle
-        if($request->image != null || $request->image != ''){
-            $file = $request->file('image');
-            $filename = time().'.'.$request->image->extension();
-            $file->move(public_path('public/images'), $filename);
-            $data['image'] = $filename;
-        }
 
         $query = Articles::where('id', $request->id)->update($data->except(['id']));
 

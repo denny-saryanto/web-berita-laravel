@@ -184,6 +184,7 @@
                         id: $('#newsId').val(),
                         title: $('#titleForm').val(),
                         content: tinymce.activeEditor.getContent(),
+                        category_id: $('#categoryForm').val(),
                     }),
                 }).done( (response) => {
                     window.alert(response.message);
@@ -191,30 +192,6 @@
                 }).fail( (error) => {
                     console.log(error);
                     window.alert(error.responseJSON.message);
-                });
-            }
-
-            updateImage = () => {
-                let token = `{{ Cookie::get('access_token') }}`;
-                let formId = $('#updateImageForm').get(0);
-                let formData = new FormData(formId);
-
-                $.ajax({
-                    url: '/api/v1/articles/update',
-                    type: 'PUT',
-                    dataType: 'JSON',
-                    contentType: false,
-                    processData: false,
-                    cache: false,
-                    headers: {
-                        'Authorization' : "Bearer "+token,
-                    },
-                    data: formData,
-                }).done( (response) => {
-                    alert(response.message);
-                }).fail( (error) => {
-                    console.log(error);
-                    alert(error.responseJSON.message);
                 });
             }
 
