@@ -1,6 +1,8 @@
 @extends('layout.main')
 
-@section('title', 'Article')
+@section('title')
+    {{ $article->title }} - Laravel News
+@endsection
     
 @section('main')
     <div class="content-header">
@@ -24,16 +26,30 @@
     <div class="content">
         <div class="container">
             <div class="row">
-                <div class="col-lg-6">
+                <div class="col-lg-8">
                     <div class="card">
-                        <div class="card-header">
+                        <div class="card-header bg-white">
                             <h2><b>{{ $article->title }}</b><h2>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header bg-white">
+                            <img class="img-fluid mx-auto d-block" src="{{ url('/public') }}/images/{{ $article->image }}">
                         </div>
                     </div>
                     <div class="card">
                         <div class="card-body">
                             <div id="content"></div>
-                            {{-- {{ $article->content }} --}}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="card">
+                        <div class="card-header bg-white">
+                            <b>Category</b>
+                        </div>
+                        <div class="card-body">
+                            <span class="badge badge-primary"><a class="text-white text-decoration-none" href="{{ route('category.id', $article->category_id) }}">{{ $article->categoryname }}</a></span>
                         </div>
                     </div>
                 </div>

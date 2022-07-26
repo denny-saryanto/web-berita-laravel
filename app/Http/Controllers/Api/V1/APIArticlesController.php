@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Articles;
+use Illuminate\Support\Facades\File;
 
 class APIArticlesController extends Controller
 {
@@ -22,7 +23,7 @@ class APIArticlesController extends Controller
         $validator = Validator::make($request->all(), [
             'title' => 'string|required',
             'content' => 'string|required',
-            'image' => 'string|required',
+            'image' => 'image|required|mimes:jpeg,png,jpg,gif,svg|max:4096',
             'category_id' => 'integer|required',
         ]);
 
@@ -32,10 +33,15 @@ class APIArticlesController extends Controller
             ], 422);
         }
 
+        // Image Request
+        $file = $request->file('image');
+        $filename = time().'.'.$request->image->extension();
+        $file->move(public_path('public/images'), $filename);
+
         $data = [
             'title' => $request->title,
             'content' => $request->content,
-            'image' => $request->image,
+            'image' => $filename,
             'user_id' => Auth::user()->id,
             'category_id' => $request->category_id,
         ];
@@ -56,10 +62,10 @@ class APIArticlesController extends Controller
     public function update(Request $request){
         $validator = Validator::make($request->all(), [
             'id' => 'integer|required',
-            'data.*.title' => 'string',
-            'data.*.content' => 'string',
-            'data.*.image' => 'string',
-            'data.*.category_id' => 'integer',
+            'title' => 'string',
+            'content' => 'string',
+            'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:4096',
+            'category_id' => 'integer',
         ]);
 
         if($validator->fails()){
@@ -68,23 +74,18 @@ class APIArticlesController extends Controller
             ], 422);
         }
 
-        // Contoh inputan
-        /* 
-            {
-                'id' : 1, //ID Buku
-                'data' : [
-                    {
-                        'title' : 'Book Title',
-                        'content' : 'Book Content',
-                    },
-                ]
-            }
-        */
-
-        $data = $request->data[0];
+        $data = $request;
         $data['user_id'] = Auth::user()->id;
 
-        $query = Articles::where('id', $request->id)->update($request->data[0]);
+        // Image Request Handle
+        if($request->image != null || $request->image != ''){
+            $file = $request->file('image');
+            $filename = time().'.'.$request->image->extension();
+            $file->move(public_path('public/images'), $filename);
+            $data['image'] = $filename;
+        }
+
+        $query = Articles::where('id', $request->id)->update($data->except(['id']));
 
         if($query){
             return response()->json([
@@ -108,7 +109,9 @@ class APIArticlesController extends Controller
             ], 422);
         }
 
-        $query = Articles::where('id', $request->id)->delete();
+        $query = Articles::where('id', $request->id)->first();
+        File::delete('public/images/'.$query->image);
+        $query->delete();
 
         if($query){
             return response()->json([

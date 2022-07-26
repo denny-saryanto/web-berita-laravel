@@ -12,6 +12,7 @@
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item">Home</li>
+                        <li class="breadcrumb-item">Dashboard</li>
                         <li class="breadcrumb-item">Categories</li>
                         <li class="breadcrumb-item active">Create</li>
                     </ol>

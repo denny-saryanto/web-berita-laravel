@@ -40,6 +40,7 @@ Route::group(['middleware' => 'auth'], function(){
         Route::prefix('articles')->group(function(){
             Route::get('show', [DashboardController::class, 'showArticle'])->name('articles.show');
             Route::get('create', [DashboardController::class, 'createArticle'])->name('articles.create');
+            Route::post('image', [DashboardController::class, 'createImage'])->name('articles.create.image');
         });
     
         Route::prefix('categories')->group(function(){

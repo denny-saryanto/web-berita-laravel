@@ -17,6 +17,7 @@
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item">Home</li>
+                        <li class="breadcrumb-item">Dashboard</li>
                         <li class="breadcrumb-item">Articles</li>
                         <li class="breadcrumb-item active">Create</li>
                     </ol>
@@ -27,7 +28,8 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-12">
-                                <form>
+                                <form id="createForm" method="POST" enctype="multipart/form-data">
+                                    @csrf
                                     <div class="input-group mb-3">
                                         <input id="titleForm" type="text" name="title" class="form-control" placeholder="Title">
                                         <div class="input-group-append">
@@ -40,7 +42,7 @@
                                         <textarea id="tiny" class="form-control" name="content"></textarea>
                                     </div>
                                     <div class="input-group mb-3">
-                                        <input id="imageForm" type="text" name="image" class="form-control" placeholder="Image Link">
+                                        <input id="imageForm" class="form-control" type="file" name="image">
                                         <div class="input-group-append">
                                             <div class="input-group-text">
                                                 <span class="fas fa-envelope"></span>
@@ -57,7 +59,7 @@
                                     </div>
                                     <div class="row">
                                         <div class="col-12">
-                                            <a onclick="createArticle()" class="btn btn-primary btn-block">Create Article</a>
+                                            <button type="submit" class="btn btn-primary btn-block">Create Article</a>
                                         </div>
                                     </div>
                                 </form>
@@ -88,31 +90,31 @@
                 menubar: false,
             });
 
-            createArticle = () => {
-                let token = `{{ Cookie::get('access_token') }}`;
+            $('#createForm').submit( (e) => {
+                e.preventDefault();
                 tinymce.triggerSave();
+                let token = `{{ Cookie::get('access_token') }}`;
+                let formId = $('#createForm').get(0);
+                let formData = new FormData(formId);
 
                 $.ajax({
                     url: '/api/v1/articles/create',
                     type: 'POST',
                     dataType: 'JSON',
-                    contentType: 'application/json',
-                    beforeSend: function(request) {
-                        request.setRequestHeader("Authorization", "Bearer "+token);
+                    contentType: false,
+                    processData: false,
+                    cache: false,
+                    headers: {
+                        'Authorization' : "Bearer "+token,
                     },
-                    data: JSON.stringify({
-                        title: $('#titleForm').val(),
-                        content: $('#tiny').val().toString(),
-                        image: $('#imageForm').val(),
-                        category_id: $('#categoryForm').val(),
-                    }),
+                    data: formData,
                 }).done( (response) => {
-                    window.alert(response.message);
+                    alert(response.message);
                 }).fail( (error) => {
                     console.log(error);
-                    window.alert(error.responseJSON.message);
+                    alert(error.responseJSON.message);
                 });
-            }
+            });
         });
     </script>
 @endsection

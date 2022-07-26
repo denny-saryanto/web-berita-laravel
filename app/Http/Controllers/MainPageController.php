@@ -12,29 +12,39 @@ class MainPageController extends Controller
     public function articles(){
         $data = Articles::join('categories', 'articles.category_id', '=', 'categories.id')
         ->select('articles.*', 'categories.name as categoryname')
-        ->paginate(5);
+        ->orderBy('articles.created_at', 'DESC')
+        ->cursorPaginate(6);
+        $categories = Categories::all()->take(10);
 
         if($data->isEmpty()){
             return view('main.main', [
-                'articles' => 'not found'
+                'articles' => 'not found',
+                'categories' => $categories
             ]);
         } else {
             return view('main.main', [
-                'articles' => $data
+                'articles' => $data,
+                'categories' => $categories
             ]);
         }
     }
 
     public function articlesById($id){
-        $data = Articles::where('id', $id)->first();
+        $data = Articles::where('articles.id', $id)
+        ->join('categories', 'articles.category_id', '=', 'categories.id')
+        ->select('articles.*', 'categories.name as categoryname')
+        ->first();
+        $categories = Categories::all()->take(10);
 
         if($data){
             return view('main.mainById', [
-                'article' => $data
+                'article' => $data,
+                'categories' => $categories
             ]);
         } else {
             return view('main.mainById', [
-                'article' => 'not found'
+                'article' => 'not found',
+                'categories' => $categories
             ]);
         }
     }
@@ -43,15 +53,19 @@ class MainPageController extends Controller
         $data = Articles::where('category_id', $id)
         ->join('categories', 'articles.category_id', '=', 'categories.id')
         ->select('articles.*', 'categories.name as categoryname')
-        ->paginate(5);
+        ->orderBy('articles.created_at', 'DESC')
+        ->cursorPaginate(6);
+        $categories = Categories::all()->take(8);
 
         if($data){
             return view('main.main', [
-                'articles' => $data
+                'articles' => $data,
+                'categories' => $categories
             ]);
         } else {
             return view('main.main', [
-                'articles' => 'not found'
+                'articles' => 'not found',
+                'categories' => $categories
             ]);
         }
     }

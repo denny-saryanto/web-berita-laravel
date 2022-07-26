@@ -17,6 +17,7 @@
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item">Home</li>
+                        <li class="breadcrumb-item">Dashboard</li>
                         <li class="breadcrumb-item">Articles</li>
                         <li class="breadcrumb-item active">Show</li>
                     </ol>
@@ -43,23 +44,27 @@
                                 <thead>
                                     <tr class="text-center">
                                         <th class="align-middle">Title</th>
-                                        <th class="align-middle">Content</th>
+                                        {{-- <th class="align-middle">Content</th> --}}
                                         <th class="align-middle">Image</th>
                                         {{-- <th class="align-middle">Publisher</th> --}}
                                         <th class="align-middle">Category</th>
-                                        <th colspan="2" class="align-middle">Action</th>
+                                        <th colspan="2" class="align-middle">Update</th>
+                                        <th class="align-middle">Delete</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach ($articles as $data)
                                         <tr class="text-center">
                                             <td>{{ $data->title }}</td>
-                                            <td>{{ $data->content }}</td>
-                                            <td>{{ $data->image }}</td>
+                                            {{-- <td>{{ $data->content }}</td> --}}
+                                            <td><img class="img-fluid" style="max-width:40%;" src="{{ url('/public') }}/images/{{ $data->image }}"/></td>
                                             {{-- <td class="align-middle">{{ $data->username }}</td> --}}
                                             <td class="align-middle">{{ $data->categoryname }}</td>
                                             <td class="align-middle">
-                                                <button id="btnUpdate" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#updateModal" onclick="setData('{{ $data->id }}', '{{ $data->title }}', `{{ $data->content }}`, '{{ $data->image }}')">Update</button>
+                                                <button id="btnUpdate" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#updateModal" onclick="setData('{{ $data->id }}', '{{ $data->title }}', `{{ $data->content }}`, '{{ $data->image }}', '{{ $data->category_id }}')">Content</button>
+                                            </td>
+                                            <td class="align-middle">
+                                                <button id="btnUpdateImage" class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#updateImage" onclick="setImageData('{{ $data->id }}')">Image</button>
                                             </td>
                                             <td class="align-middle"><button class="btn btn-sm btn-danger" onclick="deleteData({{ $data->id }})">Delete</button></td>
                                         </tr>
@@ -81,17 +86,15 @@
         </div>
     </div>
 
-    <!-- Modal -->
-    <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <!-- Modal Update Content -->
+    <div id="updateModal" class="modal fade" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title text-center" id="exampleModalLabel">Update Data</h5>
-                    {{-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> --}}
                 </div>
                 <div class="modal-body">
-                    <form method="POST">
-                        @csrf
+                    <form id="updateForm" method="PUT" enctype="multipart/form-data">
                         <div class="input-group mb-3">
                             <input id="titleForm" class="form-control" type="text" name="title" placeholder="Title">
                         </div>
@@ -99,15 +102,38 @@
                             <textarea id="tiny" class="form-control" name="content"></textarea>
                         </div>
                         <div class="input-group mb-3">
-                            <input id="imageForm" class="form-control" type="text" name="image" placeholder="URL Image">
+                            <input id="categoryForm" class="form-control" type="text" name="category_id" placeholder="Category ID">
                         </div>
-                        {{-- Content : <textarea id="contentForm" class="form-control" type="text" name="content" rows="3" style="resize:none"></textarea> --}}
-                        <input type="hidden" id="newsId" value="">
                     </form>
+                    <input id="newsId" type="hidden" name="id" value=""/>
                 </div>
                 <div class="modal-footer">
                     <button id="saveModal" type="button" class="btn btn-primary" onclick="updateData()">Save changes</button>
                     <button id="closeModal" type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Update Image -->
+    <div id="updateImage" class="modal fade" tabindex="-1" aria-labelledby="exampleImageLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title text-center" id="exampleImageLabel">Update Image</h5>
+                </div>
+                <div class="modal-body">
+                    <form id="updateImageForm" action="{{ route('articles.create.image') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        <input id="imageID" type="hidden" name="id" value=""/>
+                        <div class="input-group mb-3">
+                            <input id="imageForm" class="form-control" type="file" name="image"/>
+                        </div>
+                        <div class="modal-footer">
+                            <button id="saveModal" type="submit" class="btn btn-primary">Save changes</button>
+                            <button id="closeModal" type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -133,12 +159,15 @@
                 menubar: false,
             });
 
-            setData = (id, title, content, image) => {
+            setData = (id, title, content, image, category_id) => {
                 $('#titleForm').val(title);
                 tinymce.activeEditor.setContent(content);
-                // $('#contentForm').val(content);
-                $('#imageForm').val(image);
                 $('#newsId').val(id);
+                $('#categoryForm').val(category_id);
+            }
+
+            setImageData = (id) => {
+                $('#imageID').val(id);
             }
 
             updateData = () => {
@@ -153,14 +182,8 @@
                     },
                     data: JSON.stringify({
                         id: $('#newsId').val(),
-                        data : [
-                            {
-                                title: $('#titleForm').val(),
-                                content: tinymce.activeEditor.getContent(),
-                                image: $('#imageForm').val(),
-                                user_id: {{ Auth::user()->id }},
-                            }
-                        ]
+                        title: $('#titleForm').val(),
+                        content: tinymce.activeEditor.getContent(),
                     }),
                 }).done( (response) => {
                     window.alert(response.message);
@@ -168,6 +191,30 @@
                 }).fail( (error) => {
                     console.log(error);
                     window.alert(error.responseJSON.message);
+                });
+            }
+
+            updateImage = () => {
+                let token = `{{ Cookie::get('access_token') }}`;
+                let formId = $('#updateImageForm').get(0);
+                let formData = new FormData(formId);
+
+                $.ajax({
+                    url: '/api/v1/articles/update',
+                    type: 'PUT',
+                    dataType: 'JSON',
+                    contentType: false,
+                    processData: false,
+                    cache: false,
+                    headers: {
+                        'Authorization' : "Bearer "+token,
+                    },
+                    data: formData,
+                }).done( (response) => {
+                    alert(response.message);
+                }).fail( (error) => {
+                    console.log(error);
+                    alert(error.responseJSON.message);
                 });
             }
 

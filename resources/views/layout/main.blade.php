@@ -17,17 +17,11 @@
                     </a>
                     <!-- Left navbar links -->
                     <ul class="navbar-nav">
+                        @foreach ($categories as $category)
                         <li class="nav-item">
+                            <a href="{{ route('category.id', $category->id) }}" class="nav-link">{{ $category->name }}</a>
                         </li>
-                        <li class="nav-item d-none d-sm-inline-block">
-                            <a href="index3.html" class="nav-link">Home</a>
-                        </li>
-                        <li class="nav-item d-none d-sm-inline-block">
-                            <a href="#" class="nav-link">About Us</a>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a href="#" class="nav-link">Help</a>
-                        </li>
+                        @endforeach
                     </ul>
                     
                     <ul class="order-1 order-md-3 navbar-nav navbar-no-expand ml-auto">

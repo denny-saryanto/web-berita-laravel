@@ -33,7 +33,7 @@ class UserController extends Controller
         if(Auth::attempt(['email' => $request->email, 'password' => $request->password])){
             $request->session()->regenerate();
             $token = Auth::user()->createToken('UserToken')->accessToken;
-            return redirect()->route('dashboard')->withCookie(cookie('access_token', $token, 10));
+            return redirect()->route('dashboard')->withCookie(cookie('access_token', $token, 30));
         } else {
             return back()->withErrors('errors', 'Invalid Email or Password');
         }
