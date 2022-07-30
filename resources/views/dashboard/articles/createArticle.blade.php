@@ -49,13 +49,18 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="input-group mb-3">
-                                        <input id="categoryForm" type="number" name="category_id" class="form-control" placeholder="Category ID">
+                                    <div class="input-group mb-3 form-group">
+                                        {{-- <input id="categoryForm" type="number" name="category_id" class="form-control" placeholder="Category ID">
                                         <div class="input-group-append">
                                             <div class="input-group-text">
                                                 <span class="fas fa-envelope"></span>
                                             </div>
-                                        </div>
+                                        </div> --}}
+                                        <select class="form-control" name="category_id">
+                                        @foreach ($categories as $category)
+                                            <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                        @endforeach
+                                        </select>
                                     </div>
                                     <div class="row">
                                         <div class="col-12">

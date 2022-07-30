@@ -102,7 +102,12 @@
                             <textarea id="tiny" class="form-control" name="content"></textarea>
                         </div>
                         <div class="input-group mb-3">
-                            <input id="categoryForm" class="form-control" type="text" name="category_id" placeholder="Category ID">
+                            {{-- <input id="categoryForm" class="form-control" type="text" name="category_id" placeholder="Category ID"> --}}
+                            <select id="categoryForm" class="form-control" name="category_id">
+                                @foreach ($categories as $category)
+                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                @endforeach
+                            </select>
                         </div>
                     </form>
                     <input id="newsId" type="hidden" name="id" value=""/>

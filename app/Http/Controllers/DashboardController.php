@@ -24,19 +24,26 @@ class DashboardController extends Controller
         ->orderBy('articles.created_at', 'DESC')
         ->paginate('5');
 
+        $categories = Categories::all();
+
         if($data->isEmpty()){
             return view('dashboard.articles.showArticle', [
                 'articles' => "not found",
+                'categories' => 'not found'
             ]);
         } else {
             return view('dashboard.articles.showArticle', [
                 'articles' => $data,
+                'categories' => $categories
             ]);
         }
     }
 
     public function createArticle(Request $request){
-        return view('dashboard.articles.createArticle');
+        $categories = Categories::all();
+        return view('dashboard.articles.createArticle', [
+            'categories' => $categories,
+        ]);
     }
 
     public function createImage(Request $request){
