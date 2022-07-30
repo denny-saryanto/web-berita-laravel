@@ -33,7 +33,7 @@
             
             <aside class="main-sidebar sidebar-dark-primary elevation-4">
                 <p class="brand-link text-center">
-                    <span class="brand-text font-weight-light"><a href="{{ route('dashboard') }}">AdminLTE 3</a></span>
+                    <span class="brand-text font-weight-light"><a class="text-decoration-none" href="{{ route('dashboard') }}">Dashboard</a></span>
                 </p>
             
                 <div class="sidebar">
