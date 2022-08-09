@@ -12,6 +12,7 @@
                     <ol class="breadcrumb float-sm-left">
                         <li class="breadcrumb-item"><a>Home</a></li>
                         <li class="breadcrumb-item"><a>Articles</a></li>
+                        <li class="breadcrumb-item"><a>{{ $article->categoryname }}</a></li>
                         <li class="breadcrumb-item"><a>{{ $article->id }}</a></li>
                     </ol>
                 </div>

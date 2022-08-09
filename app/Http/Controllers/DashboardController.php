@@ -39,7 +39,7 @@ class DashboardController extends Controller
         }
     }
 
-    public function createArticle(Request $request){
+    public function createArticle(){
         $categories = Categories::all();
         return view('dashboard.articles.createArticle', [
             'categories' => $categories,
@@ -63,7 +63,7 @@ class DashboardController extends Controller
 
         $file = $request->file('image');
         $filename = time().'.'.$request->image->extension();
-        $file->move(public_path('public/images'), $filename);
+        $file->move(public_path('images'), $filename);
         $data['image'] = $filename;
 
         $query = Articles::where('id', $request->id)->update($data);
