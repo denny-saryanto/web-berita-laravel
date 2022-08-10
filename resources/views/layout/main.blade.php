@@ -10,39 +10,41 @@
     </head>
     <body class="hold-transition layout-top-nav">
         <div class="wrapper">
-            <nav class="main-header navbar navbar-expand navbar-light navbar-white">
-                <div class="container">
-                    <a href="{{ route('articles') }}" class="navbar-brand">
-                        <span class="brand-text font-weight-light">Laravel News</span>
-                    </a>
-                    <!-- Left navbar links -->
-                    <ul class="navbar-nav">
-                        @foreach ($categories as $category)
-                        <li class="nav-item">
-                            <a href="{{ route('category.id', $category->id) }}" class="nav-link">{{ $category->name }}</a>
-                        </li>
-                        @endforeach
-                    </ul>
-                    
-                    <ul class="order-1 order-md-3 navbar-nav navbar-no-expand ml-auto">
-                        @if (Auth::check())
-                            <li class="nav-item d-none d-sm-inline-block mx-1">
-                                <a href="{{ route('dashboard') }}" class="btn btn-primary">Dashboard</a>
+            <header class="main-header">
+                <nav class="navbar navbar-expand navbar-light navbar-white">
+                    <div class="container">
+                        <a href="{{ route('articles') }}" class="navbar-brand">
+                            <span class="brand-text font-weight-light">Laravel News</span>
+                        </a>
+                        <!-- Left navbar links -->
+                        <ul class="navbar-nav">
+                            @foreach ($categories as $category)
+                            <li class="nav-item">
+                                <a href="{{ route('category.id', $category->id) }}" class="nav-link">{{ $category->name }}</a>
                             </li>
-                            <li class="nav-item d-none d-sm-inline-block mx-1">
-                                <a href="{{ route('logout') }}" class="btn btn-danger">Logout</a>
-                            </li>
-                        @else
-                            <li class="nav-item d-none d-sm-inline-block mx-1">
-                                <a href="{{ route('login') }}" class="btn btn-primary">Login</a>
-                            </li>
-                            <li class="nav-item d-none d-sm-inline-block mx-1">
-                                <a href="{{ route('register') }}" class="btn btn-primary">Register</a>
-                            </li>
-                        @endif
-                    </ul>
-                </div>
-            </nav>
+                            @endforeach
+                        </ul>
+                        
+                        <ul class="order-1 order-md-3 navbar-nav navbar-no-expand ml-auto">
+                            @if (Auth::check())
+                                <li class="nav-item d-none d-sm-inline-block mx-1">
+                                    <a href="{{ route('dashboard') }}" class="btn btn-primary">Dashboard</a>
+                                </li>
+                                <li class="nav-item d-none d-sm-inline-block mx-1">
+                                    <a href="{{ route('logout') }}" class="btn btn-danger">Logout</a>
+                                </li>
+                            @else
+                                <li class="nav-item d-none d-sm-inline-block mx-1">
+                                    <a href="{{ route('login') }}" class="btn btn-primary">Login</a>
+                                </li>
+                                <li class="nav-item d-none d-sm-inline-block mx-1">
+                                    <a href="{{ route('register') }}" class="btn btn-primary">Register</a>
+                                </li>
+                            @endif
+                        </ul>
+                    </div>
+                </nav>
+            </header>
             <div class="content-wrapper">
                 @yield('main')
             </div>
